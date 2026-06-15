@@ -103,3 +103,67 @@ function setActiveNavLink() {
 
 window.addEventListener('scroll', setActiveNavLink, { passive: true });
 setActiveNavLink();
+
+// Contact form handling
+const contactForm = document.getElementById('contact-form');
+const successPopup = document.getElementById('success-popup');
+const successPopupClose = document.getElementById('success-popup-close');
+
+function showSuccessPopup() {
+    if (!successPopup) return;
+    successPopup.hidden = false;
+    requestAnimationFrame(() => {
+        successPopup.classList.add('active');
+    });
+    document.body.classList.add('menu-open');
+    successPopupClose?.focus();
+}
+
+function hideSuccessPopup() {
+    if (!successPopup) return;
+    successPopup.classList.remove('active');
+    document.body.classList.remove('menu-open');
+    setTimeout(() => {
+        successPopup.hidden = true;
+    }, 300);
+}
+
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = contactForm.querySelector('#name');
+        const email = contactForm.querySelector('#email');
+        const message = contactForm.querySelector('#message');
+
+        const nameValue = name.value.trim();
+        const emailValue = email.value.trim();
+        const messageValue = message.value.trim();
+
+        if (!nameValue || !emailValue || !messageValue) {
+            alert('Please complete all fields before sending your message.');
+            return;
+        }
+
+        contactForm.reset();
+        showSuccessPopup();
+    });
+}
+
+if (successPopupClose) {
+    successPopupClose.addEventListener('click', hideSuccessPopup);
+}
+
+if (successPopup) {
+    successPopup.addEventListener('click', (e) => {
+        if (e.target === successPopup) {
+            hideSuccessPopup();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && successPopup.classList.contains('active')) {
+            hideSuccessPopup();
+        }
+    });
+}

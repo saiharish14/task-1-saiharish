@@ -168,7 +168,7 @@
     <section id="contact" class="contact-section reveal">
         <div class="container">
             <h2 class="section-title reveal">Get In Touch</h2>
-            <form class="contact-form reveal reveal-delay-1" action="#" method="POST">
+            <form class="contact-form reveal reveal-delay-1" id="contact-form" novalidate>
                 <div class="form-group">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" id="name" name="name" class="form-input" required>
@@ -192,6 +192,91 @@
             <p class="copyright-text">&copy; 2026 BrainFlow AI. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Success Popup -->
+    <div class="success-popup-overlay" id="success-popup" role="dialog" aria-modal="true" aria-labelledby="success-popup-title" hidden>
+        <div class="success-popup">
+            <h3 class="success-popup-title" id="success-popup-title">🎉 Message Sent Successfully!</h3>
+            <p class="success-popup-text">Thank you for contacting BrainFlow AI.<br>We appreciate your interest and will get back to you soon.</p>
+            <button type="button" class="success-popup-button" id="success-popup-close">Got it</button>
+        </div>
+    </div>
+
+    <style>
+        .success-popup-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .success-popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .success-popup {
+            width: 100%;
+            max-width: 440px;
+            padding: 48px 40px;
+            text-align: center;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(0, 212, 255, 0.2);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .success-popup-overlay.active .success-popup {
+            transform: scale(1) translateY(0);
+        }
+
+        .success-popup-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, #00d4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .success-popup-text {
+            color: #94a3b8;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .success-popup-button {
+            padding: 14px 36px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 50%, #0066ff 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .success-popup-button:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.6);
+        }
+    </style>
 
     <script src="script.js"></script>
 </body>
