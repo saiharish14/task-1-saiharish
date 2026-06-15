@@ -104,33 +104,36 @@ function setActiveNavLink() {
 window.addEventListener('scroll', setActiveNavLink, { passive: true });
 setActiveNavLink();
 
-// Contact form handling
-const contactForm = document.getElementById('contact-form');
-const successPopup = document.getElementById('success-popup');
-const successPopupClose = document.getElementById('success-popup-close');
+// Contact form handling (GitHub Pages — no native submit)
+function initContactForm() {
+    const contactForm = document.getElementById('contact-form');
+    const successPopup = document.getElementById('success-popup');
+    const successPopupClose = document.getElementById('success-popup-close');
 
-function showSuccessPopup() {
-    if (!successPopup) return;
-    successPopup.hidden = false;
-    requestAnimationFrame(() => {
-        successPopup.classList.add('active');
-    });
-    document.body.classList.add('menu-open');
-    successPopupClose?.focus();
-}
+    if (!contactForm) return;
 
-function hideSuccessPopup() {
-    if (!successPopup) return;
-    successPopup.classList.remove('active');
-    document.body.classList.remove('menu-open');
-    setTimeout(() => {
-        successPopup.hidden = true;
-    }, 300);
-}
+    function showSuccessPopup() {
+        if (!successPopup) return;
+        successPopup.hidden = false;
+        requestAnimationFrame(() => {
+            successPopup.classList.add('active');
+        });
+        document.body.classList.add('menu-open');
+        successPopupClose?.focus({ preventScroll: true });
+    }
 
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    function hideSuccessPopup() {
+        if (!successPopup) return;
+        successPopup.classList.remove('active');
+        document.body.classList.remove('menu-open');
+        setTimeout(() => {
+            successPopup.hidden = true;
+        }, 300);
+    }
+
+    contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
 
         const name = contactForm.querySelector('#name');
         const email = contactForm.querySelector('#email');
@@ -145,25 +148,34 @@ if (contactForm) {
             return;
         }
 
-        contactForm.reset();
         showSuccessPopup();
     });
+
+    if (successPopupClose) {
+        successPopupClose.addEventListener('click', (event) => {
+            event.preventDefault();
+            hideSuccessPopup();
+            contactForm.reset();
+        });
+    }
+
+    if (successPopup) {
+        successPopup.addEventListener('click', (event) => {
+            if (event.target === successPopup) {
+                hideSuccessPopup();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && successPopup.classList.contains('active')) {
+                hideSuccessPopup();
+            }
+        });
+    }
 }
 
-if (successPopupClose) {
-    successPopupClose.addEventListener('click', hideSuccessPopup);
-}
-
-if (successPopup) {
-    successPopup.addEventListener('click', (e) => {
-        if (e.target === successPopup) {
-            hideSuccessPopup();
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && successPopup.classList.contains('active')) {
-            hideSuccessPopup();
-        }
-    });
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactForm);
+} else {
+    initContactForm();
 }
