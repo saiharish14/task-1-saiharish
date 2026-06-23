@@ -8,7 +8,7 @@ A modern and responsive AI SaaS landing page built using HTML, CSS, and JavaScri
 
 ## 📂 GitHub Repository
 
-🔗 https://github.com/saiharish14/brainflow-ai-landing-page
+🔗 https://github.com/saiharish14/task-1-saiharish
 
 ## 📌 Features
 
